@@ -1,3 +1,6 @@
+#' @import dplyr
+#' @import tidyverse
+#'
 lookup_table <- dplyr::tribble(
   ~where, ~english,
   "beach",     "US",
@@ -25,3 +28,5 @@ timestamp <- function(time) format(time, "%Y-%B-%d_%H-%M-%S")
 outfile_path <- function(infile) {
   paste0(timestamp(now), "_", sub("(.*)([.]csv$)", "\\1_clean\\2", infile))
 }
+
+utils::globalVariables(c("english", "temp"))
