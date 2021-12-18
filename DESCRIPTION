@@ -15,6 +15,9 @@ Config/testthat/edition: 3
 Imports: 
     utils,
     stringr,
-    dplyr
+    dplyr,
+    shinytreeview (>= 0.0.5)
 Depends: 
     tidyverse
+Remotes:  
+    git@github.com:dreamRs/shinytreeview.git
