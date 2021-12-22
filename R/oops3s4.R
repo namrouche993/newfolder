@@ -1,4 +1,4 @@
-student1=list(name="pablo",age=22,localisation="londonn")
+student1=list(name="pablo",age=21,localisation="londonn")
 student2=list(name="samir",age=24,localisation="paris")
 class(student1)="elevesinfo"
 class(student2)="elevesinfo"
