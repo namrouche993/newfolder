@@ -18,6 +18,8 @@ Imports:
     dplyr,
     shinytreeview (>= 0.0.5)
 Depends: 
+    R (>= 2.10),
     tidyverse
-Remotes:  
+Remotes: 
     git@github.com:dreamRs/shinytreeview.git
+LazyData: true

@@ -38,3 +38,34 @@ setMethod("show",
 )
 obj
 obj@name
+
+
+###################### R6 : #########################
+library(R6)
+
+Accumulator <- R6Class("Accumulator", list(
+  sum = 0,
+  add = function(x = 1) {
+    self$sum <- self$sum + x
+    invisible(self)
+  })
+)
+xa=Accumulator$new()
+xa$sum
+xa$add(25)
+xa$sum
+xa$add(1000)
+xa$sum
+
+
+
+AccumulatorChatty <- R6Class("AccumulatorChatty",
+                             inherit = Accumulator,
+                             public = list(
+                               add = function(x = 1) {
+                                 cat("Adding ", x, "\n", sep = "")
+                                 super$add(x = x)
+                               }
+                             )
+)
+
