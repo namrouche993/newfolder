@@ -1,1 +1,7 @@
-print(newfolder::mt$disp)
+#' Title
+#'
+#' @export
+#'
+printmt0 <- function(){
+  print(mt$disp)
+}
