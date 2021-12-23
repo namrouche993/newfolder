@@ -16,7 +16,9 @@ Imports:
     utils,
     stringr,
     dplyr,
-    shinytreeview (>= 0.0.5)
+    shinytreeview (>= 0.0.5),
+    readxl,
+    readr
 Depends: 
     R (>= 2.10),
     tidyverse
