@@ -14,6 +14,16 @@ print_external_data<-function(){
   print(newfolder::dat)
 }
 
+#' print_rnorm_systime
+#'
+#' @export
+#'
+print_rnorm_systime <- function(){
+  paste0(rnorm(5,0,5),"- - - - - ",Sys.time())
+}
+
+
+
 
 #                                           ##### THIS IS WRONG #####
 # #' print external data                    ##### THIS IS WRONG #####
