@@ -3,6 +3,7 @@
 export(celsify_temp)
 export(localize_beach)
 export(outfile_path)
+export(print_external_data)
 export(printmt0)
 export(str_split_one)
 import(dplyr)
