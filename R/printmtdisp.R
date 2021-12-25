@@ -1,3 +1,12 @@
+#' runaplication
+#'
+#' @export
+#' @import shiny
+runapplication<-function(){
+  shiny::runApp(paste0(getwd(),"/R"))
+}
+
+
 #' Title
 #'
 #' @export
