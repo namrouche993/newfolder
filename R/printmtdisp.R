@@ -2,9 +2,51 @@
 #'
 #' @export
 #' @import shiny
+#' @import datasets
 runapplication<-function(){
-  shiny::runApp("~/R")
-}
+  ui <- fluidPage(
+
+    # Give the page a title
+    titlePanel("Telephones by region en regions algerie essai bark"),
+
+    # Generate a row with a sidebar
+    sidebarLayout(
+
+      # Define the sidebar with one input
+      sidebarPanel(
+        selectInput("region", "Region:",
+                    choices=colnames(WorldPhones)),
+        hr(),
+        helpText("Data from AT&T (1961) The World's Telephones.")
+      ),
+
+      # Create a spot for the barplot
+      mainPanel(
+        plotOutput("phonePlot")
+      )
+
+    )
+
+  )
+
+  server <- function(input, output, session) {
+
+    # Fill in the spot we created for a plot
+    output$phonePlot <- renderPlot({
+
+      # Render a barplot
+      barplot(WorldPhones[,input$region]*1000,
+              main=input$region,
+              ylab="Number of Telephones",
+              xlab="Year")
+    })
+
+  }
+
+  shinyApp(ui, server)
+
+
+  }
 
 
 #' Title
