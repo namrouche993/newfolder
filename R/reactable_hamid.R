@@ -3,7 +3,7 @@
 # library(readxl)
 # library(showtext)
 # library(grDevices)
-
+# 
 # 
 # full_table <- read_excel("full_table.xlsx")
 # full_table$`Creances Reclames par SADEG - Energie`=as.numeric(full_table$`Creances Reclames par SADEG - Energie`)
@@ -20,7 +20,7 @@
 # font_add_google("Merriweather Sans", "merri")
 # font_add_google("Mukta Mahee", "muktama")
 # showtext_auto()
-# 
+
 
 sadeg_energie_pal <- function(x) rgb(colorRamp(c("#ffe4cc", "#ffb54d"),interpolate = "spline")(x), maxColorValue = 255)
 sadeg_energie_pal2 <- function(x) rgb(colorRamp(c("#e5a245", "#66481e"),interpolate = "spline")(x), maxColorValue = 255)
@@ -33,6 +33,9 @@ sadeg_travaux_pal0 <- function(x) rgb(colorRamp(c("#f7f3ed", "#f7f3ed"),interpol
 sadeg_total_pal <- function(x) rgb(colorRamp(c("#af6666", "#cc0000"),interpolate = "spline")(x), maxColorValue = 255)
 sadeg_total_pal2 <- function(x) rgb(colorRamp(c("#cc0000", "#a30000"),interpolate = "spline")(x), maxColorValue = 255)
 sadeg_total_pal0 <- function(x) rgb(colorRamp(c("#f7f3ed", "#c79393"),interpolate = "spline")(x), maxColorValue = 255)
+
+
+diff_energie_pal <- function(x) rgb(colorRamp(c("#e5cccc", "#aa5555"),interpolate = "spline")(x), maxColorValue = 255)
 
 
 
@@ -66,7 +69,7 @@ for(i in 1:50){
 
 topgi %>% select(-11) %>% 
   reactable(
-    highlight=TRUE,pagination =FALSE,
+    highlight=TRUE,pagination =FALSE,fullWidth = TRUE,
     #defaultSorted = c("Species", "Petal.Length")
     defaultColDef = colDef(
       format = colFormat(separators = TRUE,digits = 2,locales = "fr-FR",suffix = " DA"),
@@ -77,6 +80,7 @@ topgi %>% select(-11) %>%
       Wilaya=colDef(
         name="",
         format=colFormat(suffix="")
+        
       ),
       `Creances Reclames par SADEG - Energie`=colDef(
         name="Energie",
@@ -396,7 +400,36 @@ topgi %>% select(-11) %>%
         name="Energie",
         headerStyle =list(
           borderLeft="35px inset transparent"
-        ),
+        )
+        # ,
+        # 
+        # style = function(value) {
+        #   normalized <- (value - min(topgi$diff_energie)) / 
+        #     
+        #     (max(
+        #       topgi %>%
+        #         filter(!id_wilaya %in% c(21)) %>% 
+        #         select(y=diff_energie) %>% .$y
+        #     )
+        #     
+        #     - min(topgi$diff_energie))
+        #   
+        #   if(value<0){
+        #     color <- "#018370"
+        #     list(background = color,marginLeft="15px")
+        #   } else if(value==0) {
+        #     color <- "#f6eeee"
+        #     list(background = color,marginLeft="15px")
+        #   } else if (normalized>1){
+        #     color <- "#763b3b"
+        #     list(background = color,marginLeft="15px")
+        #   } else {
+        #     color <- diff_energie_pal(normalized)
+        #     list(background = color,marginLeft="15px")
+        #   }
+        #   
+        # }
+        # 
         
       ),
       
@@ -418,7 +451,7 @@ topgi %>% select(-11) %>%
                ),
                columns = c("Creances Reclames par SADEG - Energie","Creances Reclames par SADEG - TRAVAUX","creances_reclames_sadeg")),
       
-      colGroup(name = "Créances Déclarés par MO",
+      colGroup(name = "Créances Déclarés par OPGI",
                headerStyle =list(
                  borderRight="25px inset transparent",
                  borderLeft="25px inset transparent"
