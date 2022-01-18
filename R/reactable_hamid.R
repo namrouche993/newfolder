@@ -1,21 +1,22 @@
-# library(tidyverse)
-# library(reactable)
-# library(readxl)
-# library(showtext)
-# library(grDevices)
-# 
-# 
-# full_table <- read_excel("full_table.xlsx")
-# full_table$`Creances Reclames par SADEG - Energie`=as.numeric(full_table$`Creances Reclames par SADEG - Energie`)
-# 
-# 
-# for(i in 1:194) {
-#   for(j in c(3,4,5,7)){
-#     if (is.na(as.numeric(full_table[i,j]))==TRUE){
-#       full_table[i,j]=0
-#     }
-#   }
-# }
+library(tidyverse)
+library(reactable)
+library(readxl)
+library(showtext)
+library(grDevices)
+
+
+full_table <- read_excel("full_table.xlsx")
+full_table$`Creances Reclames par SADEG - Energie`=as.numeric(full_table$`Creances Reclames par SADEG - Energie`)
+
+
+for(i in 1:194) {
+  for(j in c(3,4,5,7)){
+    if (is.na(as.numeric(full_table[i,j]))==TRUE){
+      full_table[i,j]=0
+    }
+  }
+}
+
 # 
 # font_add_google("Merriweather Sans", "merri")
 # font_add_google("Mukta Mahee", "muktama")
@@ -75,15 +76,20 @@ topgi %>% select(-11) %>%
       format = colFormat(separators = TRUE,digits = 2,locales = "fr-FR",suffix = " DA"),
       sortNALast = TRUE,
       style = list(fontFamily="Mukta Mahee")
+      ,footerStyle = list(fontWeight = "bold")
     ),
     columns=list(
       Wilaya=colDef(
         name="",
         format=colFormat(suffix="")
+        ,footer = "Total"
         
       ),
       `Creances Reclames par SADEG - Energie`=colDef(
         name="Energie",
+        
+        footer=paste(format(sum(topgi$`Creances Reclames par SADEG - Energie`,na.rm = TRUE)
+                      , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         headerStyle =list(
           borderLeft="55px inset transparent"
         ),
@@ -129,6 +135,8 @@ topgi %>% select(-11) %>%
       ),
       `Creances Reclames par SADEG - TRAVAUX`=colDef(
         name="Travaux",
+        footer=paste(format(sum(topgi$`Creances Reclames par SADEG - TRAVAUX`,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         style = function(value) {
           normalized <- (value - min(topgi$`Creances Reclames par SADEG - TRAVAUX`)) / 
             
@@ -176,6 +184,8 @@ topgi %>% select(-11) %>%
       ),
       creances_reclames_sadeg=colDef(
         name="Total",
+        footer=paste(format(sum(topgi$creances_reclames_sadeg,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         headerStyle =list(
           borderRight="35px inset transparent"
         ),
@@ -240,6 +250,8 @@ topgi %>% select(-11) %>%
       
       `Creances declares par MO - Energie`=colDef(
         name="Energie",
+        footer=paste(format(sum(topgi$`Creances declares par MO - Energie`,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         headerStyle =list(
           borderLeft="35px inset transparent"
         ),
@@ -288,6 +300,8 @@ topgi %>% select(-11) %>%
       ),
       `Creances declares par MO - Travaux`=colDef(
         name="Travaux",
+        footer=paste(format(sum(topgi$`Creances declares par MO - Travaux`,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         style = function(value) {
           normalized <- (value - min(topgi$`Creances Reclames par SADEG - TRAVAUX`)) / 
             
@@ -335,6 +349,8 @@ topgi %>% select(-11) %>%
       ),
       creances_declares_mo=colDef(
         name="Total",
+        footer=paste(format(sum(topgi$creances_declares_mo,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         
         headerStyle =list(
           borderRight="35px inset transparent"
@@ -398,6 +414,8 @@ topgi %>% select(-11) %>%
       ),
       diff_energie=colDef(
         name="Energie",
+        footer=paste(format(sum(topgi$diff_energie,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA"),
         headerStyle =list(
           borderLeft="35px inset transparent"
         )
@@ -434,11 +452,15 @@ topgi %>% select(-11) %>%
       ),
       
       diff_travaux=colDef(
-        name="Travaux"
+        name="Travaux",
+        footer=paste(format(sum(topgi$diff_travaux,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA")
       ),
       
       diff_total=colDef(
-        name="Total"
+        name="Total",
+        footer=paste(format(sum(topgi$diff_total,na.rm = TRUE)
+                            , digits=3,scientific = FALSE,big.mark=" ",nsmall = 2),"DA")
       )
       
     ),
