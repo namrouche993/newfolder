@@ -1,0 +1,98 @@
+# Requires reactable v0.1.0.9000
+# devtools::install_github("glin/reactable")
+
+library(shiny)
+library(reactable)
+
+ui <- fluidPage(
+  navbarPage(id="nava",title = "navbarpagee",
+             tabPanel(id="tab1",title="taba1",
+                      fluidRow(
+               actionButton("select_btn", "Select rows"),
+               
+               reactableOutput("tbl"),
+               textOutput("rows_selected")
+                      )
+               ),
+             tabPanel(id="tab2",title="taba2",
+                      fluidRow(
+                reactableOutput("tbl2")
+                )
+             )
+    
+  )
+  )
+
+server <- function(input, output,session) {
+  
+  # 
+  # observe({
+  #   updateNavbarPage(session, "nava",
+  #                    selected = c("taba2")
+  #   )
+  #   
+  # })
+  
+    
+observe({
+          updateReactable("tbl2", selected = as.numeric(input$show_details))
+  
+  observeEvent(input$show_details, {
+        updateNavbarPage(session, "nava",
+                     selected = "taba2")
+    })
+    
+    
+  })
+  # 
+  # df <- eventReactive(input$show_details, {
+  #   paste0(input$show_details)
+  # })
+  
+  
+  
+  
+  output$tbl2 <-renderReactable({
+    reactable(mtcars,
+              selection="single",
+              onClick = "select",
+              defaultSelected = c() #as.numeric(df())
+              )
+  })
+  
+  output$tbl <- renderReactable({
+    reactable(
+      iris %>% mutate(details=NA),
+
+      columns = list(
+        details=colDef(
+          cell =function() htmltools::tags$button("Plus dde details")
+          
+        )
+      ),
+      
+      onClick = JS("function(rowInfo, colInfo) {
+    // Only handle click events on the 'details' column
+    if (colInfo.id !== 'details') {
+      return
+    }
+
+    // Display an alert dialog with details for the row
+    // window.alert('Details for row ' + rowInfo.index + ':\\n' + JSON.stringify(rowInfo.row, null, 2))
+
+    // Send the click event to Shiny, which will be available in input$show_details
+    // Note that the row index starts at 0 in JavaScript, so we add 1
+    if (window.Shiny) {
+      Shiny.setInputValue('show_details', { index: rowInfo.index + 1 }, { priority: 'event' })
+    }
+  }")
+      
+      
+      
+    )
+  })
+  
+                    
+}
+
+shinyApp(ui, server)
